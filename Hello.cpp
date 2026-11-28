@@ -3,6 +3,7 @@ using namespace std;
 int id,age;
 string contact; 
 string name,bloodgroup,location;
+int a=0,b=0,ab=0,o=0,an=0,bn=0,abn=0,on=0;
 class Donor{
     public:
     int id,age;
@@ -136,10 +137,70 @@ class Date{
   
     
 };
-class Person{
+class SearchDonor{
+
+    public:
+
+    void searchById(int searchId) {
+
+        ifstream file("donors.txt");
+
+        if (!file) {
+            cout << "Unable to open donors.txt";
+            return;
+        }
+
+        string line;
+        bool found = false;
+
+        while (getline(file, line)) {
+
+            stringstream ss(line);
+
+            string id, age, name, bloodGroup;
+            string contact, location, availability;
+
+            getline(ss, id, '|');
+            getline(ss, age, '|');
+            getline(ss, name, '|');
+            getline(ss, bloodGroup, '|');
+            getline(ss, contact, '|');
+            getline(ss, location, '|');
+            getline(ss, availability, '|');
+
+            if (stoi(id) == searchId) {
+
+                found = true;
+
+                cout << "\nDonor Found!\n";
+                cout << "ID: " << id << endl;
+                cout << "Name: " << name << endl;
+                cout << "Blood Group: " << bloodGroup << endl;
+                cout << "Contact: " << contact << endl;
+                cout << "Location: " << location << endl;
+
+                if (availability == "1") {
+                    cout << "Availability: True" << endl;
+                }
+                else {
+                    cout << "Availability: False" << endl;
+                }
+
+                break;
+            }
+        }
+
+        if (!found) {
+            cout << "Donor not found!" << endl;
+        }
+
+        file.close();
+    }
+};
+
    
 
-};
+
 
 class Requester{
 
@@ -154,6 +215,20 @@ class DonorResponse{
 
 };
 class BloodInventory{
+    public:
+
+    void displayInventory(){
+        cout<<"A+ Group : "<<a<<endl;
+        cout<<"B+ Group : "<<b<<endl;
+        cout<<"A- Group : "<<an<<endl;
+        cout<<"B- Group : "<<bn<<endl;
+        cout<<"AB+ Group : "<<ab<<endl;
+        cout<<"AB- Group : "<<abn<<endl;
+        cout<<"O+ Group : "<<o<<endl;
+        cout<<"O- Group : "<<on<<endl;
+        return;
+
+    }
 
 };
 class CompatibilityService{
@@ -179,9 +254,7 @@ int main(){
     
     do{
         cout<<"==================================================="<<endl;
-
-    cout<<"\n\nBLOOD DONATION MANAGEMENT SYSTEM\n\n"<<endl;
-
+    cout<<"\nBLOOD DONATION MANAGEMENT SYSTEM\n"<<endl;
     cout<<"==================================================="<<endl;
 
     cout<<"\n1. Register Donor"<<endl;
@@ -195,7 +268,7 @@ int main(){
 
     cout<<"Enter choice : ";
     cin>>choice;
-    
+
 
     switch(choice){
         case 1: {
@@ -206,7 +279,11 @@ int main(){
             break;
         }
         case 2:
-            cout<<"Blood Request Management"<<endl;
+            SearchDonor s;
+            int id;
+            cout<<"Enter Donor ID : ";
+            cin>>id;
+            s.searchById(id);
             break;
         case 3:
             cout<<"Donor Compatibility & Matching"<<endl;
@@ -218,7 +295,22 @@ int main(){
             cout<<"Inventory Management"<<endl;
             break;
         case 6:
-            cout<<"Reports"<<endl;
+            BloodInventory b;
+            b.displayInventory();
+            bool y=true;
+            int boolean;
+            cout<<"If you want to add stock then enter 1 otherwise enter 0 : ";
+            cin>>boolean;
+            if(boolean){
+                y=true;
+            }
+            else{
+                y=false;
+            }
+            if(y){
+                
+            }
+
             break;
         case 7:
             cout<<"Save Data"<<endl;
